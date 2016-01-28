@@ -1,0 +1,23 @@
+  - name: Adding the sudo path in the bashrc files
+    lineinfile: dest={{vagrant_home}}/.bashrc line="alias sudo='sudo env PATH=$PATH'" insertafter="^export PATH" state=present
+
+  - name: change the pip source
+    template: src=pip.conf.j2 dest=/etc/pip.conf
+
+  - name: upload pip
+    copy: src=scripts/get-pip.py dest=/opt/get-pip.py owner=vagrant group=vagrant mode=755
+
+  - name: install pip
+    shell: /usr/local/bin/python /opt/get-pip.py
+
+  - name: install the pip packages
+    pip: name={{ item }} executable=/usr/local/bin/pip2.7
+    with_items:
+      - robotframework
+      - robotframework-httplibrary
+      - robotframework-sshlibrary
+      - simplejson
+      - PyMySQL
+      - requests
+      - beautifulsoup4
+      - robotframework-databaselibrary

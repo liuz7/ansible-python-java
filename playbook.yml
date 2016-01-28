@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: true
+
+  roles:
+    - ansible-package
+    - ansible-oracle-java
+    - ansible-python
+    - ansible-test
+    - ansible-scm
+  vars:
+    java_version: 7

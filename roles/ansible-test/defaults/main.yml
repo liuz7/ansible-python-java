@@ -1,0 +1,9 @@
+root_home: /root
+vagrant_home: /home/vagrant
+jenkins_home: /home/jenkins
+test_user: indexdownload
+test_group: indexdownload
+jenkins_user: jenkins
+jenkins_group: jenkins
+vagrant_user: vagrant
+vagrant_group: vagrant

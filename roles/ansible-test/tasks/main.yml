@@ -1,0 +1,58 @@
+  - name: create group for testing
+    group: name={{item}} state=present
+    with_items:
+      - "{{test_group}}"
+      - "{{jenkins_group}}"
+      - "{{vagrant_group}}"
+
+  - name: create user for testing
+    user: name={{ item.name }} state=present groups={{ item.groups }}
+    with_items:
+      - { name: "{{test_group}}", groups: "{{test_group}}" }
+      - { name: "{{jenkins_user}}", groups: "{{jenkins_group}}" }
+      - { name: "{{vagrant_user}}", groups: "{{vagrant_group}}" }
+
+  - name: create webapps directory
+    file: path=/data/webapps/ state=directory mode=0777 recurse=yes
+
+  - name: create other directories in webapps for testing
+    file: path=/data/{{item}} state=directory mode=0777 recurse=yes
+    with_items:
+      - webapps/tar/
+      - webapps/bak/
+      - appdatas/index/
+      - appdatas/report/
+
+  - name: create ftp directories for testing
+    file: path=/data/appdatas/ftp/ state=directory mode=0777 recurse=yes owner={{test_user}} group={{test_group}}
+
+  - name: create m2 directory
+    file: path=/{{item}}/.m2/ state=directory mode=0777 recurse=yes
+    with_items:
+      - "{{vagrant_home}}"
+      - "{{root_home}}"
+      - "{{jenkins_home}}"
+
+  - name: add the app env
+    template: src=appenv.j2 dest=/data/webapps/appenv
+
+  - name: add the maven settings xml
+    template: src=settings.xml.j2 dest={{item}}/.m2/settings.xml
+    with_items:
+      - "{{vagrant_home}}"
+      - "{{root_home}}"
+      - "{{jenkins_home}}"
+
+  - name: Adding the JAVA_HOME in the bashrc files
+    lineinfile: dest={{item}}/.bashrc line='export JAVA_HOME=/usr/java/default/' insertafter='EOF' state=present
+    with_items:
+      - "{{vagrant_home}}"
+      - "{{root_home}}"
+      - "{{jenkins_home}}"
+
+  - name: Adding the JAVA PATH in the bashrc files
+    lineinfile: dest={{item}}/.bashrc line='export PATH=$PATH:$JAVA_HOME/bin' insertafter="^export JAVA_HOME" state=present
+    with_items:
+      - "{{vagrant_home}}"
+      - "{{root_home}}"
+      - "{{jenkins_home}}"

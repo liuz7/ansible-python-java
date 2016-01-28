@@ -1,0 +1,60 @@
+  - name: install libselinux-python packages
+    yum: name=libselinux-python state=present
+
+  - name: create repo backup directory
+    shell: mkdir -p {{yum_repo_dir}}/backup creates={{yum_repo_dir}}/backup
+
+  - name: backup old repos
+    shell: mv {{yum_repo_dir}}/*.repo {{yum_repo_dir}}/backup/ removes={{yum_repo_dir}}/epel.repo
+
+  - name: add yum source list
+    copy: src=repos/CentOS6-Base-163.repo dest={{yum_repo_dir}}/CentOS6-Base-163.repo
+
+  - name: update yum cache
+    shell: yum clean all && yum makecache && yum groupinstall -y 'development tools'
+
+  - name: install yum required packages
+    yum: name={{ item }} state=present
+    with_items:
+      - git
+      - curl
+      - vsftpd
+      - wget
+      - mysql-server
+      - zlib-devel
+      - bzip2-devel
+      - openssl-devel
+      - xz-libs
+
+  - name: download Apache Maven
+    get_url: url={{maven_download_url}} dest=/tmp/apache-maven--bin.tar.gz
+
+  - name: install Maven
+    shell: chdir=/tmp creates=/opt/apache-maven-{{maven_version}} tar -zxf apache-maven--bin.tar.gz -C /opt
+  - lineinfile: dest=/etc/profile regexp='^#?\s*export MAVEN_HOME=(.*)$' line='export MAVEN_HOME=/opt/apache-maven-{{maven_version}}' state=present
+  - lineinfile: dest=/etc/profile regexp='^#?\s*export PATH=(.*)MAVEN_HOME(.*)$' line="export PATH=$PATH:$MAVEN_HOME/bin" state=present
+
+  - name: check python version
+    shell: python -V
+    register: python_version
+
+  - name: download Python
+    get_url: url={{python_download_url}} dest=/tmp/Python.tgz
+    when: python_version.stdout.find('{{python_package_version}}') == -1
+
+  - name: change the permission of installed directory
+    file: path=/opt mode=0777
+
+  - name: untar python
+    shell: chdir=/tmp creates=/opt/Python-{{python_package_version}} tar zxvf Python.tgz -C /opt
+    when: python_version.stdout.find('{{python_package_version}}') == -1
+
+  - name: install python
+    shell: chdir=/opt/Python-{{python_package_version}} creates=/usr/local/bin/python2.7 ./configure --prefix=/usr/local && make && make altinstall
+    when: python_version.stdout.find('{{python_package_version}}') == -1
+
+  - name: link the python binary
+    shell: removes=/usr/local/bin/python2.7 ln -sf /usr/local/bin/python2.7 /usr/local/bin/python
+
+  - name: reload vsftpd
+    service: name=vsftpd state=reloaded

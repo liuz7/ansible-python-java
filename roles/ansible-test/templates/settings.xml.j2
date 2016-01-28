@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <servers>
+    <server>
+      <id>dianping.repo</id>
+      <username>fw-deploy</username>
+      <password>AP2mqXWpzb4vjz51n6PMRPHByMc</password>
+    </server>
+    <server>
+      <id>dianping.repo.snapshots</id>
+      <username>fw-deploy</username>
+      <password>AP2mqXWpzb4vjz51n6PMRPHByMc</password>
+    </server>
+    <server>
+      <id>dianping-releases</id>
+      <username>search</username>
+      <password>AP6YVUgLAdeH7jieVzmx6zjTiM9</password>
+     </server>
+    <server>
+      <id>meituan.repo</id>
+      <username>deployment</username>
+      <password>deployment123</password>
+     </server>
+    <server>
+      <id>meituan.repo.snapshots</id>
+      <username>deployment</username>
+      <password>deployment123</password>
+     </server>
+  </servers>
+
+  <profiles>
+    <profile>
+      <id>dianping</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+        <jdk>1.6</jdk>
+      </activation>
+      <properties>
+        <repo.internal.snapshots.url>http://mvn.dianpingoa.com/dianping-snapshots</repo.internal.snapshots.url>
+        <repo.internal.releases.url>http://mvn.dianpingoa.com/dianping-releases</repo.internal.releases.url>
+        <repo.external.url>http://mvn.dianpingoa.com/third-party</repo.external.url>
+        <repo.proxy.url>http://mvn.dianpingoa.com/dprepo</repo.proxy.url>
+      </properties>
+      <repositories>
+        <repository>
+          <id>dianping-internal-snapshots</id>
+          <name>Dian Ping internal repository for snapshots artifacts</name>
+          <url>http://mvn.dianpingoa.com/dianping-snapshots</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+        </repository>
+        <repository>
+          <id>dianping-internal-releases</id>
+          <name>Dian Ping internal repository for released artifacts</name>
+          <url>http://mvn.dianpingoa.com/dianping-releases</url>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </repository>
+        <!-- no snapshot allowed for external repositories! -->
+        <repository>
+          <id>dianping-third-party</id>
+          <name>Dian Ping cache server for external repositories</name>
+          <url>http://mvn.dianpingoa.com/third-party</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </repository>
+        <repository>
+          <id>central</id>
+          <name>Dian Ping proxy server for external repositories</name>
+          <url>http://mvn.dianpingoa.com/dprepo</url>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>dianping-internal-snapshots</id>
+          <name>Dian Ping internal repository for snapshots artifacts</name>
+          <url>http://mvn.dianpingoa.com/dianping-snapshots</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+        </pluginRepository>
+        <pluginRepository>
+          <id>dianping-internal-releases</id>
+          <name>Dian Ping internal repository for released artifacts</name>
+          <url>http://mvn.dianpingoa.com/dianping-releases</url>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </pluginRepository>
+        <!-- no snapshot allowed for external repositories -->
+        <pluginRepository>
+          <id>dianping-central-cache</id>
+          <name>Dian Ping cache to external repositories</name>
+          <url>http://mvn.dianpingoa.com/third-party</url>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+          <id>central</id>
+          <name>Platform proxy to external repositories</name>
+          <url>http://mvn.dianpingoa.com/dprepo</url>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+
+    <profile>
+      <id>meituan</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+        <jdk>1.6</jdk>
+      </activation>
+      <properties>
+        <meituan.release.url>http://maven.sankuai.com/nexus/content/groups/public</meituan.release.url>
+        <meituan.snapshot.url>http://maven.sankuai.com/nexus/content/groups/public-snapshots</meituan.snapshot.url>
+      </properties>
+
+      <repositories>
+        <repository>
+          <id>meituan-internal-snapshots</id>
+          <name>Mei Tuan internal repository for snapshots artifacts</name>
+          <url>http://maven.sankuai.com/nexus/content/groups/public-snapshots/</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+        </repository>
+        <repository>
+          <id>meituan-internal-releases</id>
+          <name>Mei Tuan internal repository for released artifacts</name>
+          <url>http://maven.sankuai.com/nexus/content/groups/public/</url>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>meituan-release</id>
+          <name>meituan release repo for releases artifacts</name>
+          <url>http://maven.sankuai.com/nexus/content/groups/public/</url>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </pluginRepository>
+        <pluginRepository>
+          <id>meituan-snapshot</id>
+          <name>meituan snapshot repository for snapshots artifacts</name>
+          <url>http://maven.sankuai.com/nexus/content/groups/public-snapshots/</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
+
+  <pluginGroups>
+    <pluginGroup>org.apache.maven.plugins</pluginGroup>
+    <pluginGroup>org.unidal.maven.plugins</pluginGroup>
+    <pluginGroup>com.dianping.maven.plugins</pluginGroup>
+  </pluginGroups>
+
+
+  <!-- If you want to get depedencies from external servers, remove the annotation! -->
+  <activeProfiles>
+    <activeProfile>dianping</activeProfile>
+    <activeProfile>meituan</activeProfile>
+  </activeProfiles>
+</settings>
+

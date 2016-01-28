@@ -1,0 +1,5 @@
+  - name: prepare the arts-it source code
+    git: repo=http://code.dianpingoa.com/arts-repo/arts-it.git dest=/vagrant_data/arts-it force=yes
+
+  - name: prepare the arts source code
+    git: repo=http://code.dianpingoa.com/arts-repo/arts.git dest=/vagrant_data/arts force=yes
